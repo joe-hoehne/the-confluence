@@ -1,0 +1,31 @@
+The Confluence: relationships-v5 naming data
+
+The application uses the exact v5 mapping approved for this project. These
+single-word gameplay interpretations are not additional canonical Shards.
+The source-word evidence does not establish the interpretation of a constituent
+set, and the source organizations do not endorse this project.
+
+Lexical source: Open English Wordnet 2025, common-word edition.
+https://en-word.net/static/english-wordnet-2025.zip
+Archive SHA-256:
+38b16326159f51853626b7d24a44c453fa88ab33f06fce5ec8fc5996d1c2be93
+
+Attribution: Open English Wordnet team; based on Princeton University WordNet.
+The selected source headwords are combined with existing project concepts.
+Intent annotations, matching, filtering and the generated mapping are project
+adaptations, not source-dictionary assertions or literary canon.
+
+Open English Wordnet is licensed under Creative Commons Attribution 4.0
+International, with underlying Princeton WordNet notices retained.
+Full terms are distributed alongside this notice:
+licenses/oewn-LICENSE.txt
+licenses/oewn-WNDB-License.txt
+
+Source license:
+https://github.com/globalwordnet/english-wordnet/blob/main/LICENSE.md
+Underlying notices:
+https://github.com/globalwordnet/english-wordnet/blob/main/WNDB_License.txt
+
+The shipped lookup contains names only, not dictionary definitions or a
+downloaded thesaurus. No AI, random choice or external service runs during
+naming. Original source and fan-project acknowledgments remain in README.md.
