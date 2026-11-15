@@ -2,6 +2,8 @@
 
 An immersive, locally playable speculative Realmatic study. Sixteen original Shards, an orbital canvas, luminous procedural SVG crystals with gentle perspective rotation, and a persistent **Arcanum** of discoveries. No backend, accounts, telemetry, AI services, generated media, or external fonts.
 
+[Play The Confluence](https://the-confluence-e8aqcxa0b2a0hmcs.westus3-01.azurewebsites.net)
+
 ## Run
 
 Requires Node.js 24+ and npm.
@@ -20,47 +22,9 @@ npm run build
 npm run preview -- --host 127.0.0.1
 ```
 
-For the dependency-free production server, use `npm start` after building (default port 8080; override with `PORT`). Vite preview is only for local inspection, not Azure hosting.
+For the dependency-free production server, use `npm start` after building (default port 8080; override with `PORT`). Vite preview is only for local inspection, not production hosting.
 
 The installed project runs without an internet connection. This is not an installable PWA; refreshing still requires the server. Optional lore links open Coppermind externally.
-
-## Azure App Service
-
-The deployed development/testing preview is [The Confluence](https://the-confluence-e8aqcxa0b2a0hmcs.westus3-01.azurewebsites.net). Hosting uses a dedicated App Service plan and app. Deployment is optional; the game runs locally without Azure.
-
-`infra\main.bicep` provisions only a dedicated `rg-the-confluence-westus3`, one Linux **Basic B1** worker in **West US 3**, and the `the-confluence` app. Azure supplies a secure hashed default hostname while preserving that prefix. No database, paid logging service, AI service, registry, custom domain, or additional workers are provisioned. Verified West US 3 Linux B1 USD retail: **$0.017/hour**, approximately **$12.41 at 730 hours/month**, before taxes and any applicable transfer charges; actual billing and subscription-credit eligibility remain governed by Azure.
-
-This deployment is a **development/testing preview**. The deployment command requires the `MSDN_2014-09-01` offer with spending limit **On** and stops if either guard changes; it never converts a subscription or removes the limit. This intentionally narrow deployment helper is not a general production hosting recipe. Check your own benefit eligibility; credit exhaustion can suspend a preview. [Microsoft's Dev/Test terms](https://learn.microsoft.com/azure/devtest/offer/overview-what-is-devtest-offer-visual-studio) and [spending-limit behavior](https://learn.microsoft.com/azure/cost-management-billing/manage/spending-limit).
-
-With PowerShell 7, Azure CLI, Bicep CLI, Node 24 and the existing dependencies available, sign in to the authorized subscription, then:
-
-```powershell
-# Copy once and fill in your approved subscription, tenant and exact hostname.
-# This local file is ignored by Git; never put credentials in it.
-Copy-Item infra\deploy.example.json infra\deploy.local.json
-pwsh -NoProfile -File infra\deploy.ps1 -ValidateConfigOnly
-
-# Read-only infrastructure preview; creates no resource group.
-npm run deploy:azure
-
-# After review of the infrastructure preview:
-npm run deploy:azure -- -Apply
-
-# For an existing-app code update without any infrastructure writes:
-npm run deploy:azure -- -Apply -CodeOnly
-```
-
-The command pins deployment to the subscription, tenant and exact existing hostname in ignored `infra\deploy.local.json` (or an explicit `-ConfigPath`); zero/invalid identifiers fail before any Azure operation. It does not change the CLI's default subscription. It performs what-if before any writes, validates quota/policy, runs engine/server checks, a reduced-motion production browser check and the production build/lint, then provisions Bicep and publishes a zip through Azure CLI's signed-in Entra authentication. A bounded readiness check reports and retries transient startup 502/503/504 responses; other failures remain explicit. It never requests publishing passwords or enables basic publishing authentication. Repeating it updates the same dedicated resources; review every preview before using `-Apply`.
-
-`-CodeOnly` additionally verifies the existing hostname, region and single-worker Linux B1 plan, and skips all infrastructure create/update calls. Use it for approved application-only redeployments. Public naming attribution and license files are copied into `dist` by Vite and included in the production bundle.
-
-Only `dist`, `server.mjs` and a minimal dependency-free runtime manifest are packaged. Source, tests, naming experiments, review notes and deployment credentials are excluded; temporary packaging is removed afterward. Linux Node 24 LTS runs the production static server with Always On, HTTPS-only, TLS 1.2 minimum, HTTP/2, FTP disabled and SCM/FTP basic publishing disabled. Static responses include CSP, MIME protection, referrer/permissions policies and HTTPS HSTS. Hashed assets use immutable caching, HTML revalidates, and HTML navigation has a shell fallback without turning missing assets into successful HTML responses. `/healthz` is a lightweight readiness check.
-
-The script prints the actual Azure-returned application URL and resource-group portal link after publication. Then verify spoiler consent, source placement, a canonical fusion, Arcanum, and reload persistence in a fresh reduced-motion browser context. Close that validation context afterward; do not resume already-paused local/design previews. Progress is browser-and-origin-local: an Azure visit does not automatically transfer localhost discoveries, and redeploying does not erase existing saves at the same hosted origin.
-
-`npm run test:production` runs a bounded isolated Chromium check against the built production server with reduced motion and GPU acceleration disabled. It closes the browser and temporary server afterward. To check a published deployment instead, set `SHARDS_PRODUCTION_URL` to the actual HTTPS URL first; this uses a fresh browser context, not existing local or hosted saves.
-
-After building, `node --test tests\naming-production.test.mjs` verifies the approved v5 Reconciliation / Innovation / Restraint sequence, canonical Harmony/Retribution, and legacy-save constellation identities and actual edges. It accepts the same hosted-URL environment variable and closes its isolated validation context.
 
 ## Play
 
@@ -73,6 +37,7 @@ After building, `node --test tests\naming-production.test.mjs` verifies the appr
 - **Undo action** reverses the last canvas action (up to 30 actions in this session); the Arcanum stays intact. **Clear well** asks for confirmation and preserves the Arcanum.
 - Select a staged crystal to reveal its separate **Remove** control, usable by mouse, touch or keyboard. Unselected crystals do not show it. It removes only that crystal from the well, preserves its discoveries and recorded routes, and can be reversed with **Undo action**. The remaining well is saved automatically.
 - Progress automatically persists in local storage under `shards-observatory-v1`; consent uses `shards-spoilers-accepted-v1`. An unreadable save is not overwritten. The visible recovery action discards it explicitly. Storage failures show a warning; session play remains available.
+- Progress is local to each browser and site address. Discoveries made locally do not automatically transfer to the live game or another browser.
 
 ## Naming and canon policy
 
@@ -114,6 +79,8 @@ npm run test:browser
 ```
 
 They exercise native mouse dragging, one-click source placement, deliberate staged fusion, keyboard/touch selection, canon-only labels, route selection and topology, search/list alternatives, one-click reuse, reload/migration, responsive widths and reduced motion. Set `SHARDS_SCREENSHOT_DIR` to an existing artifact directory to capture visual evidence.
+
+After building, `npm run test:production` checks the production server with reduced motion and GPU acceleration disabled, including per-crystal removal, Undo and saved-state reload. `node --test tests\naming-production.test.mjs` checks the approved v5 Reconciliation / Innovation / Restraint sequence, canonical Harmony/Retribution, and legacy-save constellation identities and actual edges. Both close their isolated browser contexts and temporary servers afterward.
 
 Responsive layouts, visible keyboard focus, native accessible modal dialogs, live fusion feedback, a touch/keyboard alternative to dragging, reduced-motion support and forced-color styles are included.
 
