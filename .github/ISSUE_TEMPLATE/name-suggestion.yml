@@ -1,0 +1,66 @@
+name: Suggest an Intent
+description: Propose or support a single-word name for a Shard combination. Spoilers through Wind and Truth.
+title: "[Name] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Inscribe a possibility in the Arcanum
+        **Spoilers through Wind and Truth.**
+
+        [Search existing name suggestions](https://github.com/joe-hoehne/the-confluence/issues?q=is%3Aissue%20%22%5BName%5D%22)
+        for the same constituent Shards and proposed name first. If you find a match,
+        add a 👍 reaction to the issue's **opening post** rather than submitting a duplicate.
+        You can nominate a name already in the game or propose a new one.
+
+        Votes guide maintainer review; they do not automatically change the game or establish book canon.
+  - type: dropdown
+    id: constituent-shards
+    attributes:
+      label: Constituent Original Shards
+      description: >-
+        Select the complete set of at least two Original Shards, including every
+        constituent inside any compounds. For Harmony + Honor, select Preservation,
+        Ruin and Honor, not just Honor. GitHub requires a selection but cannot enforce
+        the two-Shard minimum.
+      multiple: true
+      options:
+        - Ambition
+        - Autonomy
+        - Cultivation
+        - Devotion
+        - Dominion
+        - Endowment
+        - Honor
+        - Invention
+        - Mercy
+        - Odium
+        - Preservation
+        - Reason
+        - Ruin
+        - Valor
+        - Virtuosity
+        - Whimsy
+    validations:
+      required: true
+  - type: input
+    id: proposed-name
+    attributes:
+      label: Proposed Intent
+      description: One word expressing an abstract concept, in the spirit of the books. An existing game name is welcome too.
+      placeholder: Reconciliation
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Why this Intent?
+      description: In a few sentences, connect the proposed name to the full set of constituent Shards.
+      placeholder: Explain how the Intents reinforce, balance or challenge one another.
+    validations:
+      required: true
+  - type: input
+    id: current-name
+    attributes:
+      label: Current game name (optional)
+      description: If you have this combination in your well or Arcanum, what is it called now?
